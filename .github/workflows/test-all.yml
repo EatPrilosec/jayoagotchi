@@ -69,12 +69,12 @@ jobs:
         if: ${{ github.event.inputs.id == 'all' }}
         id: boards
         run: |
-          [[ ! -z "${{ define-matrix-all.outputs.boards }} ]] && echo ${{ define-matrix-all.outputs.boards }}
+          [[ ! -z "${{ needs.define-matrix-all.outputs.boards }} ]] && echo ${{ needs.define-matrix-all.outputs.boards }}
       - name: Define one
         if: ${{ !(github.event.inputs.id == 'all') }}
         id: board
         run: | 
-          [[ ! -z "${{ define-matrix-one.outputs.boards }} ]] && echo ${{ define-matrix-one.outputs.boards }}
+          [[ ! -z "${{ needs.define-matrix-one.outputs.boards }} ]] && echo ${{ needs.define-matrix-one.outputs.boards }}
           
   build:
     name: ${{ matrix.name }}
