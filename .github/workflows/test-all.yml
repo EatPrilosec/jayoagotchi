@@ -11,7 +11,7 @@ on:
       id:
         description: 'board id to make'
         type: string
-        default: -ALL-
+        default: ALL
         required: true
       name:
         description: 'friendly name'
@@ -23,7 +23,7 @@ jobs:
   build:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.id == '-ALL-' || (matrix.environment == [{"name":github.event.inputs.name,"id":github.event.inputs.id}]) }} 
+    if: ${{ github.event.inputs.id == 'ALL' || (matrix.environment == [{"name":github.event.inputs.name,"id":github.event.inputs.id}]) }} 
     strategy:
       matrix: 
         include:
