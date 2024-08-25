@@ -1,4 +1,4 @@
-name: Build Test image
+name: Build Specific Test image
 on:
   workflow_dispatch:
     inputs:
