@@ -63,12 +63,17 @@ jobs:
   define-matrix:
     runs-on: ubuntu-latest
     outputs:
-      boards: ${{ steps.boards.outputs.boards }}
+      boards: ${{ github.event.inputs.id == 'all' && steps.boards.outputs.boards || steps.boards.outputs.board }}
     steps:
-      - name: Define Matrix 
+      - name: Define all
+        if: ${{ github.event.inputs.id == 'all' }}
         id: boards
         run: |
           [[ ! -z "${{ define-matrix-all.outputs.boards }} ]] && echo ${{ define-matrix-all.outputs.boards }}
+      - name: Define one
+        if: ${{ !(github.event.inputs.id == 'all') }}
+        id: board
+        run: | 
           [[ ! -z "${{ define-matrix-one.outputs.boards }} ]] && echo ${{ define-matrix-one.outputs.boards }}
           
   build:
