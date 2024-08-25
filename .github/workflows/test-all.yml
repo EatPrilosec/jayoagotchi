@@ -20,20 +20,65 @@ on:
         required: false
 
 jobs:
+  define-matrix-all:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.id == 'all' }}
+    outputs:
+      boards: ${{ steps.boards.outputs.boards }}
+    steps:
+      - name: matrix prep - All boards 
+        id: boards
+        run: |
+          cat <<EOBoards>> "$GITHUB_OUTPUT"
+          [
+            {
+              "name": "Raspberry Pi 32-bit",
+              "id": "32bit"
+            },
+            {
+              "name": "Raspberry Pi 64-bit",
+              "id": "64bit"
+            }
+          ]
+          EOBoards
+
+  define-matrix-one:
+    runs-on: ubuntu-latest
+    if: ${{ !(github.event.inputs.id == 'all') }}
+    outputs:
+      boards: ${{ steps.boards.outputs.boards }}
+    steps:
+      - name: matrix prep - one board 
+        id: boards
+        run: |
+          cat <<EOBoards>> "$GITHUB_OUTPUT"
+          [
+            {
+              "name": "${{ github.event.inputs.name }}",
+              "id": "${{ github.event.inputs.id }}"
+            }
+          ]
+          EOBoards
+
+  define-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      boards: ${{ steps.boards.outputs.boards }}
+    steps:
+      - name: Define Matrix 
+        id: boards
+        run: |
+          [[ ! -z "${{ define-matrix-all.outputs.boards }} ]] && echo ${{ define-matrix-all.outputs.boards }}
+          [[ ! -z "${{ define-matrix-one.outputs.boards }} ]] && echo ${{ define-matrix-one.outputs.boards }}
+          
   build:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    if: | 
-      ${{ github.event.inputs.id == 'all' || (matrix.id == github.event.inputs.id) }}
-      ${{ github.event.inputs.id == 'all' || (matrix.name == github.event.inputs.name) }}
+    if: ${{ github.event.inputs.id == 'all' &&  || (matrix.id == github.event.inputs.id) }}
     strategy:
-      matrix: 
-        include:
-          - name: "Raspberry Pi 32-bit"
-            id: "32bit"  
-          - name: "Raspberry Pi 64-bit"
-            id: "64bit"
-    
+      matrix:
+        boards: ${{ fromJSON(needs.define-matrix.outputs.boards) }}
+        
     steps:
       - uses: actions/checkout@v4
         with:
