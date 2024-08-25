@@ -20,10 +20,6 @@ jobs:
         - name: "Raspberry Pi 64-bit"
           id: "64bit" 
 
-
-
-
- 
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,7 +35,7 @@ jobs:
         run: sudo apt update && sudo apt install qemu-user-static qemu-utils xz-utils -y
 
       - name: Build ${{ matrix.name }} img file
-        run: cd publish/build; ls -la .; pwd; make packer; make ${{ matrix.id }}
+        run: cd publish/build; make -f Makefile.ports packer; make -f Makefile.ports ${{ matrix.id }}
       
       - name: Change name of .img to add version
         run: |
