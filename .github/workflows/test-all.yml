@@ -79,7 +79,6 @@ jobs:
   build:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.id == 'all' &&  || (matrix.id == github.event.inputs.id) }}
     strategy:
       matrix:
         boards: ${{ fromJSON(needs.define-matrix.outputs.boards) }}
