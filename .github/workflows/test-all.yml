@@ -23,7 +23,7 @@ jobs:
   build:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
-    if: ${{ (github.event.inputs.id == "ALL") }} 
+    if: ${{ (github.event.inputs.id == Null) }} 
     strategy:
       matrix: 
         include:
