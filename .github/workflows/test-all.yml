@@ -19,7 +19,11 @@ jobs:
           id: "32bit"  
         - name: "Raspberry Pi 64-bit"
           id: "64bit" 
-        
+
+
+
+
+ 
     steps:
       - uses: actions/checkout@v4
         with:
@@ -75,13 +79,3 @@ jobs:
         with:
           name: Pwnagatchi-${{ matrix.id }}-TestImage-${{ env.GITHUB_RUN_NUMBER }}
           path: pwnagotchi-${{ env.VERSION }}-${{ matrix.id }}-TestImage${{ env.GITHUB_RUN_NUMBER }}.img
-
-      #- name: Release
-      #  uses: softprops/action-gh-release@v2
-      #  with:
-      #    prerelease: false
-      #    make_latest: true
-      #    tag_name: v${{ env.VERSION }}
-      #    name: Pwnagotchi v${{ env.VERSION }}
-      #    files: pwnagotchi-${{ env.VERSION }}-${{ matrix.id }}-TestImage${{ env.GITHUB_RUN_NUMBER }}.img.xz
-      #    generate_release_notes: true
